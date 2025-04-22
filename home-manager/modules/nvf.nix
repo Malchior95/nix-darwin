@@ -21,7 +21,7 @@
           vim.opt.tabstop = 2
           vim.opt.shiftwidth = 2
           vim.opt.expandtab = true
-          vim.cmd(':hi NonText guifg=bg')
+          vim.opt.fillchars = { eob = " "}
         '';
 
         spellcheck = {
@@ -112,7 +112,7 @@
           enable = true;
           name = "gruvbox";
           style = "dark";
-          transparent = false;
+          transparent = true;
         };
 
         autopairs.nvim-autopairs.enable = true;

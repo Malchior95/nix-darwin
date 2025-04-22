@@ -10,5 +10,7 @@
       plugins = ["git"];
       theme = "robbyrussell";
     };
+    history.ignoreAllDups = true;
+    initExtra = ''if [ "$TMUX" = "" ]; then tmux; fi'';
   };
 }

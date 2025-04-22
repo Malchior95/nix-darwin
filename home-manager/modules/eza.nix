@@ -16,6 +16,7 @@
     #enable = true;
     shellAliases = {
       ls = "eza --color always --icons always --git -h --group-directories-first";
+      lt = "eza --color always --icons always --git -h --group-directories-first -lT";
     };
   };
 }
