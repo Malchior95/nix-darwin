@@ -28,12 +28,14 @@
     }: {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
-      environment.systemPackages = with pkgs; [
+      environment.systemPackages = [
         pkgs.home-manager
       ];
       fonts.packages = with pkgs; [
         nerd-fonts.jetbrains-mono
       ];
+
+      services.netbird.enable = true;
 
       # Necessary for using flakes on this system.
       nix.settings.experimental-features = "nix-command flakes";
