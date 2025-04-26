@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    #nixstable.url = "github:nixos/nixpkgs/nixpkgs-24.11-darwin";
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
@@ -12,15 +13,18 @@
 
     nvf.url = "github:notashelf/nvf";
     nvf.inputs.nixpkgs.follows = "nixpkgs";
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
   };
 
   outputs = inputs @ {
     self,
     nix-darwin,
     nixpkgs,
+    nix-homebrew,
     ...
   }: let
     system = "aarch64-darwin";
+    #pkgsStable = inputs.nixstable.legacyPackages.${system};
     configuration = {
       pkgs,
       config,
@@ -35,7 +39,19 @@
         nerd-fonts.jetbrains-mono
       ];
 
-      services.netbird.enable = true;
+      homebrew = {
+        enable = true;
+        casks = [
+          "dotnet-sdk" #required for godot-mono
+          "godot-mono"
+          "blender"
+          "krita"
+        ];
+        onActivation.cleanup = "zap";
+      };
+
+      #services.netbird.enable = true;
+      #services.tailscale.enable = true;
 
       # Necessary for using flakes on this system.
       nix.settings.experimental-features = "nix-command flakes";
@@ -61,12 +77,14 @@
     darwinConfigurations."iron-mac" = nix-darwin.lib.darwinSystem {
       modules = [
         configuration
-        #home-manager.darwinModules.home-manager
-        #{
-        #  home-manager.useGlobalPkgs = true;
-        #  home-manager.useUserPackages = true;
-        #  home-manager.users.ironche = import ./home-manager
-        #}
+        nix-homebrew.darwinModules.nix-homebrew
+        {
+          nix-homebrew = {
+            enable = true;
+            enableRosetta = true;
+            user = user;
+          };
+        }
       ];
     };
 
@@ -77,7 +95,7 @@
         #inputs.sops-nix.homeManagerModules.sops
       ];
       extraSpecialArgs = {
-        inherit user system inputs;
+        inherit user system inputs; #pkgsStable;
       };
     };
   };

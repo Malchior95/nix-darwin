@@ -22,6 +22,9 @@
           vim.opt.shiftwidth = 2
           vim.opt.expandtab = true
           vim.opt.fillchars = { eob = " "}
+          vim.opt.autoindent = false
+          vim.opt.smartindent = false
+          vim.opt.smarttab = true
         '';
 
         spellcheck = {
@@ -314,7 +317,8 @@
     #dotnet-sdk_9
     #dotnet-ef
     #gcc
-    android-tools
+    #android-tools
     #clang-tools
+    #godot-mono
   ];
 }
