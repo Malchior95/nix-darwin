@@ -7,6 +7,7 @@
     ./git.nix
     ./nvf.nix
     ./tmux.nix
+    ./zoxide.nix
     ./zsh.nix
   ];
 }
