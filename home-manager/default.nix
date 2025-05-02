@@ -17,14 +17,15 @@
     stateVersion = "25.05";
 
     sessionVariables = {
-      #EDITOR = "nvim";
+      EDITOR = "nvim";
     };
     packages = with pkgs; [
       discord
       fastfetch
       wget
       rip2
-      #sops
+      sops
+      #qbittorrent
       #libreoffice
     ];
   };

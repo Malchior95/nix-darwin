@@ -25,6 +25,7 @@
           vim.opt.autoindent = false
           vim.opt.smartindent = false
           vim.opt.smarttab = true
+          vim.opt.scrolloff = 20;
         '';
 
         spellcheck = {
@@ -160,6 +161,7 @@
           enable = true;
           gitsigns.enable = true;
           gitsigns.codeActions.enable = false; # throws an annoying debug message
+          git-conflict.enable = true;
         };
 
         minimap = {

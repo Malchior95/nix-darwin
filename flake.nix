@@ -46,12 +46,13 @@
           "godot-mono"
           "blender"
           "krita"
+          "qbittorrent"
         ];
         onActivation.cleanup = "zap";
       };
 
       #services.netbird.enable = true;
-      #services.tailscale.enable = true;
+      services.tailscale.enable = true;
 
       # Necessary for using flakes on this system.
       nix.settings.experimental-features = "nix-command flakes";
