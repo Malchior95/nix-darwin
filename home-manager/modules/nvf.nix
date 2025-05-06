@@ -34,6 +34,7 @@
 
         lsp = {
           formatOnSave = true;
+          #inlayHints.enable = true; this does not show errors and warnings - only types?
           lspkind.enable = false;
           lightbulb.enable = false;
           lspsaga.enable = false;
@@ -41,6 +42,14 @@
           lspSignature.enable = true;
           otter-nvim.enable = false;
           nvim-docs-view.enable = false;
+        };
+
+        diagnostics = {
+          enable = true;
+          config = {
+            underline = true;
+            virtual_lines = true;
+          };
         };
 
         debugger = {
@@ -71,6 +80,8 @@
           python.enable = false;
           rust = {
             enable = true;
+            lsp.enable = true;
+            format.enable = true;
             crates.enable = true;
           };
 
@@ -121,7 +132,13 @@
 
         autopairs.nvim-autopairs.enable = true;
 
-        autocomplete.nvim-cmp.enable = true;
+        autocomplete.nvim-cmp = {
+          enable = true;
+          sources = {
+            nvim-lsp = "nvim_lsp";
+            async-path = "async_path";
+          };
+        };
         snippets.luasnip.enable = false;
 
         filetree = {
