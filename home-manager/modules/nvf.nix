@@ -33,6 +33,7 @@
         };
 
         lsp = {
+          enable = true;
           formatOnSave = true;
           #inlayHints.enable = true; this does not show errors and warnings - only types?
           lspkind.enable = false;
@@ -60,7 +61,6 @@
         };
 
         languages = {
-          enableLSP = true;
           enableFormat = true;
           enableTreesitter = true;
           enableExtraDiagnostics = true;

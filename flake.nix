@@ -47,6 +47,7 @@
           "blender"
           "krita"
           "qbittorrent"
+          "minecraft"
         ];
         onActivation.cleanup = "zap";
       };
