@@ -30,10 +30,12 @@
       config,
       ...
     }: {
+      system.primaryUser = "ironche";
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages = [
         pkgs.home-manager
+        pkgs.zulu24 #java
       ];
       fonts.packages = with pkgs; [
         nerd-fonts.jetbrains-mono
@@ -48,6 +50,7 @@
           "krita"
           "qbittorrent"
           "minecraft"
+          "goxel"
         ];
         onActivation.cleanup = "zap";
       };

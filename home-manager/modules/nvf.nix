@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  lib,
   ...
 }: {
   imports = [inputs.nvf.homeManagerModules.default];
@@ -27,6 +28,21 @@
           vim.opt.smarttab = true
           vim.opt.scrolloff = 20;
         '';
+
+        autocmds = [
+          {
+            enable = false;
+            desc = "autosave";
+            event = ["InsertLeave" "TextChanged"]; #"TextChanged" "TextChangedI"];
+            pattern = ["*.rs"];
+            callback = lib.mkLuaInline ''
+              function()
+                  vim.api.nvim_feedkeys(":w\r", "n", true)
+              end
+
+            '';
+          }
+        ];
 
         spellcheck = {
           enable = false;
@@ -81,6 +97,7 @@
           rust = {
             enable = true;
             lsp.enable = true;
+            dap.enable = true;
             format.enable = true;
             crates.enable = true;
           };
