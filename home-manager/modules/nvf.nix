@@ -29,21 +29,6 @@
           vim.opt.scrolloff = 20;
         '';
 
-        autocmds = [
-          {
-            enable = false;
-            desc = "autosave";
-            event = ["InsertLeave" "TextChanged"]; #"TextChanged" "TextChangedI"];
-            pattern = ["*.rs"];
-            callback = lib.mkLuaInline ''
-              function()
-                  vim.api.nvim_feedkeys(":w\r", "n", true)
-              end
-
-            '';
-          }
-        ];
-
         spellcheck = {
           enable = false;
         };
@@ -52,7 +37,8 @@
           enable = true;
           formatOnSave = true;
           #inlayHints.enable = true; this does not show errors and warnings - only types?
-          lspkind.enable = false;
+          lspkind.enable = true;
+          lspconfig.enable = true;
           lightbulb.enable = false;
           lspsaga.enable = false;
           trouble.enable = false;
@@ -179,9 +165,11 @@
           };
         };
 
-        treesitter.context = {
-          enable = true;
-          setupOpts.max_lines = 3;
+        treesitter = {
+          context = {
+            enable = true;
+            setupOpts.max_lines = 3;
+          };
         };
 
         binds = {

@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   programs.tmux = {
     enable = true;
     baseIndex = 1;
@@ -7,6 +7,8 @@
     keyMode = "vi";
     terminal = "screen-256color";
     extraConfig = ''
+      set -g default-terminal "tmux-256color"
+
       bind -n Ń select-window -t 1
       bind -n ™ select-window -t 2
       bind -n € select-window -t 3
@@ -18,19 +20,6 @@
 
       bind -n M-Enter new-window
     '';
-    plugins = with pkgs; [
-      tmuxPlugins.gruvbox
-      # {
-      #   plugin = tmuxPlugins.resurrect;
-      #   extraConfig = "set -g @resurrect-strategy-nvim 'session'";
-      # }
-      # {
-      #   plugin = tmuxPlugins.continuum;
-      #   extraConfig = ''
-      # set -g @continuum-restore 'on'
-      # set -g @continuum-save-interval '60' # minutes
-      #   '';
-      # }
-    ];
+    plugins = with pkgs; [ tmuxPlugins.gruvbox ];
   };
 }

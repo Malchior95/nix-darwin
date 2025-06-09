@@ -1,13 +1,5 @@
-{
-  pkgs,
-  config,
-  user,
-  inputs,
-  ...
-}: {
-  imports = [
-    ./modules
-  ];
+{ pkgs, config, user, inputs, ... }: {
+  imports = [ ./modules ];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -16,15 +8,15 @@
     homeDirectory = "/Users/${user}";
     stateVersion = "25.05";
 
-    sessionVariables = {
-      EDITOR = "nvim";
-    };
+    sessionVariables = { EDITOR = "nvim"; };
     packages = with pkgs; [
       discord
       fastfetch
       wget
       rip2
       sops
+      gitui
+      lazygit
       #qbittorrent
       #libreoffice
     ];

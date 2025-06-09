@@ -5,6 +5,7 @@
     ./direnv.nix
     ./eza.nix
     ./git.nix
+    ./helix.nix
     ./nvf.nix
     ./tmux.nix
     ./zoxide.nix
