@@ -8,15 +8,15 @@
     homeDirectory = "/Users/${user}";
     stateVersion = "25.05";
 
-    sessionVariables = { EDITOR = "nvim"; };
+    sessionVariables = { EDITOR = "hx"; };
     packages = with pkgs; [
       discord
       fastfetch
       wget
       rip2
       sops
-      gitui
       lazygit
+      onefetch
       #qbittorrent
       #libreoffice
     ];
