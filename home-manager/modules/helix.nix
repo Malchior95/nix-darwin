@@ -26,6 +26,8 @@
     };
   };
 
+  #home.packages = [ pkgs.clippy ];
+
   programs.helix = let
     crates-lsp-source = pkgs.fetchgit {
       url = "https://github.com/MathiasPius/crates-lsp.git";
@@ -40,7 +42,12 @@
 
   in {
     enable = true;
-    package = inputs.helix.packages.${pkgs.system}.default;
+    #package = inputs.helix.packages.${pkgs.system}.default;
+    package =
+      pkgs.buildEnv { # adding clippy to helix runtime closure - I want clippy to always be available in helix
+        name = "helix-with-clippy";
+        paths = [ inputs.helix.packages.${pkgs.system}.default pkgs.clippy ];
+      };
     settings = {
       theme = "gruvbox";
       editor = {
@@ -130,9 +137,9 @@
         rust-analyzer = {
           command = "${pkgs.rust-analyzer}/bin/rust-analyzer";
           config = {
-            #check = {
-            #  command = "${pkgs.clippy}/bin/clippy";
-            #};
+            check = {
+              command = "clippy";
+            }; # the problem here is that clippy is not run as a binary, but as cargo run, so I cannot invoke pkgs.clippy here
             cargo = { features = "all"; };
           };
         };
