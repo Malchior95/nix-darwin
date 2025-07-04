@@ -44,6 +44,10 @@
             "qbittorrent"
             "minecraft"
             "goxel"
+            "vlc"
+          ];
+          brews = [
+            #"qemu"
           ];
           onActivation.cleanup = "zap";
         };

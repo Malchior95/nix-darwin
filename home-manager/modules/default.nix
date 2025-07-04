@@ -1,6 +1,6 @@
 {
   imports = [
-    ./kitty
+    ./kitty.nix
     ./bat.nix
     ./direnv.nix
     ./eza.nix

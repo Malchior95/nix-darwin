@@ -19,6 +19,8 @@
       bind -n ķ split-window -h
 
       bind -n M-Enter new-window
+
+      set -g @tmux-gruvbox "dark"
     '';
     plugins = with pkgs; [ tmuxPlugins.gruvbox ];
   };

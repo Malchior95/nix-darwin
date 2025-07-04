@@ -14,6 +14,7 @@
         cp -r * $out
       '';
     };
+
   in {
     enable = true;
     enableZshIntegration = true;
@@ -21,17 +22,16 @@
     theme = {
       flavor = {
         dark = "gruvbox-dark";
-        light = "gruvbox-dark";
+        light = "gruvbox-dark"; # TODO: need light theme
       };
     };
   };
 
-  #home.packages = [ pkgs.clippy ];
-
   programs.helix = let
     crates-lsp-source = pkgs.fetchgit {
       url = "https://github.com/MathiasPius/crates-lsp.git";
-      sha256 = "sha256-r+bSc98YsUc5ANc8WbXI8N2wdEF53uJoWQbsBHYmrGc=";
+      # sha256 = "sha256-EkyEwKR46L+dMKRPwUyzPJKKJGi72eprNMW4mFJx6dU=";
+      sha256 = "sha256-9+0qgdUn5l9oQQavbnR6rHe5zp5WHhGuRyOXt2Dv8Tw=";
     };
     crates-lsp-drv = pkgs.rustPlatform.buildRustPackage {
       pname = "crates-lsp";
@@ -46,7 +46,12 @@
     package =
       pkgs.buildEnv { # adding clippy to helix runtime closure - I want clippy to always be available in helix
         name = "helix-with-clippy";
-        paths = [ inputs.helix.packages.${pkgs.system}.default pkgs.clippy ];
+        paths = [
+          inputs.helix.packages.${pkgs.system}.default
+          #pkgs.helix
+          pkgs.clippy
+          pkgs.rustfmt
+        ];
       };
     settings = {
       theme = "gruvbox";
@@ -69,16 +74,22 @@
       };
     };
     extraConfig = ''
-      [keys.normal]
-      C-y = [
-        ':sh rm -f /tmp/unique-file',
-        ':insert-output ${pkgs.yazi}/bin/yazi %{buffer_name} --chooser-file=/tmp/unique-file',
-        ':insert-output echo "\x1b[?1049h\x1b[?2004h" > /dev/tty',
-        ':open %sh{cat /tmp/unique-file}',
-        ':redraw',
-        ':set mouse false',
-        ':set mouse true',
-      ]
+         [keys.normal]
+         C-o = [
+           ':theme gruvbox_light_soft'
+         ]
+         C-p = [
+           ':theme gruvbox'
+         ]
+      #   C-y = [
+      #     ':sh rm -f /tmp/unique-file',
+      #     ':insert-output ${pkgs.yazi}/bin/yazi %{buffer_name} --chooser-file=/tmp/unique-file',
+      #     ':insert-output echo "\x1b[?1049h\x1b[?2004h" > /dev/tty',
+      #     ':open %sh{cat /tmp/unique-file}',
+      #     ':redraw',
+      #     ':set mouse false',
+      #     ':set mouse true',
+      #   ]
     '';
     languages = {
       language = [
@@ -90,7 +101,7 @@
         {
           name = "rust";
           auto-format = true;
-          formatter.command = "${pkgs.rustfmt}/bin/rustfmt";
+          #formatter.command = "${pkgs.rustfmt}/bin/rustfmt";
         }
         {
           name = "c-sharp";
@@ -98,10 +109,19 @@
         }
         {
           name = "toml";
-          language-servers = [{
-            name = "crates-lsp";
-            except-features = [ "format" ];
-          }];
+
+          auto-format = true;
+          formatter = {
+            command = "${pkgs.taplo}/bin/taplo";
+            args = [ "format" "-" ];
+          };
+          language-servers = [
+            {
+              name = "crates-lsp";
+              except-features = [ "format" ];
+            }
+            "taplo"
+          ];
         }
         {
           name = "typescript";
@@ -159,6 +179,7 @@
           command =
             "${pkgs.typescript-language-server}/bin/typescript-language-server";
         };
+        taplo = { command = "${pkgs.taplo}/bin/taplo"; };
       };
     };
   };

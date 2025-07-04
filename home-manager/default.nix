@@ -17,6 +17,9 @@
       sops
       lazygit
       onefetch
+      maccy
+      whatsapp-for-mac
+      squirreldisk
       #qbittorrent
       #libreoffice
     ];
