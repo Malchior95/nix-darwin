@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.zsh = {
     enable = true;
     syntaxHighlighting.enable = true;
@@ -8,10 +9,10 @@
     };
     oh-my-zsh = {
       enable = true;
-      plugins = ["git"];
+      plugins = [ "git" ];
       theme = "robbyrussell";
     };
     history.ignoreAllDups = true;
-    initContent = ''if [ "$TMUX" = "" ]; then tmux; fi'';
+    # initContent = ''if [ "$TMUX" = "" ]; then tmux; fi'';
   };
 }

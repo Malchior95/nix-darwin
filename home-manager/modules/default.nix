@@ -8,6 +8,7 @@
     ./helix.nix
     ./nvf.nix
     ./tmux.nix
+    ./zellij.nix
     ./zoxide.nix
     ./zsh.nix
   ];

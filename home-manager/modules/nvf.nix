@@ -3,11 +3,12 @@
   inputs,
   lib,
   ...
-}: {
-  imports = [inputs.nvf.homeManagerModules.default];
+}:
+{
+  imports = [ inputs.nvf.homeManagerModules.default ];
 
   programs.nvf = {
-    enable = true;
+    enable = false;
     settings = {
       vim = {
         viAlias = true;
@@ -273,7 +274,11 @@
 
         keymaps = [
           {
-            mode = ["n" "v" "i"];
+            mode = [
+              "n"
+              "v"
+              "i"
+            ];
             key = "<C-n>";
             action = "<cmd>Neotree toggle right<CR>";
           }
@@ -324,7 +329,7 @@
             action = "<Right>";
           }
           {
-            mode = ["n"];
+            mode = [ "n" ];
             key = "<ESC>";
             action = "<cmd>noh<CR>";
             noremap = false;
