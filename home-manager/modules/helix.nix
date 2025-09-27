@@ -4,7 +4,7 @@
     let
       gruvboxSource = pkgs.fetchgit {
         url = "https://github.com/bennyyip/gruvbox-dark.yazi";
-        sha256 = "sha256-RWqyAdETD/EkDVGcnBPiMcw1mSd78Aayky9yoxSsry4=";
+        sha256 = "sha256-NeePBNhMVXyIrED4Iu4ZSHwwgsd3CV8oBzYoQOWsD/U=";
       };
 
       grv = pkgs.stdenv.mkDerivation {
@@ -34,12 +34,13 @@
 
   home.packages = with pkgs; [
     #rust
-    rustc
-    cargo
-    clippy
-    rustfmt
+    # rustc
+    # cargo
+    rustup
+    # clippy
+    # rustfmt
     cargo-generate
-    rust-analyzer
+    # rust-analyzer
     #web
     bun
   ];
@@ -112,11 +113,6 @@
           ':redraw',
           ':set mouse false',
           ':set mouse true',
-        ]
-
-        C-Y = [
-          ':sh rm -f /tmp/unique-file',
-          ':sh tmux new-window ${pkgs.yazi}/bin/yazi %{buffer_name}',
         ]
       '';
       languages = {
@@ -206,6 +202,30 @@
             };
             auto-format = true;
           }
+          {
+            name = "json";
+            formatter = {
+              command = "${pkgs.prettier}/bin/prettier";
+              args = [
+                "--parser"
+                "json"
+              ];
+            };
+            auto-format = true;
+          }
+          {
+            name = "svelte";
+            # formatter = {
+
+            #   command = "${pkgs.prettier}/bin/prettier";
+            #   args = [
+            #     "--parser"
+            #     "svelte"
+            #   ];
+            # };
+            language-servers = [ "svelte-language-server" ];
+            auto-format = true;
+          }
         ];
 
         language-server = {
@@ -256,6 +276,13 @@
           vscode-css-language-server = {
             command = "${pkgs.vscode-langservers-extracted}/bin/vscode-css-language-server";
           };
+          svelte-language-server = {
+            command = "${pkgs.svelte-language-server}/bin/svelteserver";
+            args = [
+              "--stdio"
+              "--log=error"
+            ];
+          };
         };
       };
     };
@@ -279,6 +306,12 @@
       (raw_string_literal (string_content) @injection.content)
          (#eq? @_comment "/*css*/")
         (#set! injection.language "css")
+      )
+
+            ((block_comment) @_comment
+      (raw_string_literal (string_content) @injection.content)
+         (#eq? @_comment "/*sql*/")
+        (#set! injection.language "sql")
       )
     '';
 

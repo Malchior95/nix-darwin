@@ -55,6 +55,7 @@
               "tuxguitar"
               "steamcmd"
               "whatsapp"
+              "discord"
             ];
             brews = [
               #"qemu"

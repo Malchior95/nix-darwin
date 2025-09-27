@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   programs.gh.enable = true;
 
   programs.git = {
@@ -14,19 +15,20 @@
   programs.lazygit = {
     enable = true;
     settings = {
-      customCommands = [{
-        key = "L";
-        command =
-          "git diff HEAD -- {{ .SelectedFile.Name | quote }} | delta -s";
-        output = "terminal";
-        context = "files";
-      }];
-      # git = {
-      #   paging = {
-      #     colorArgs = "always";
-      #     pager = "${pkgs.delta}/bin/delta --paging=never -s";
-      #   };
-      # };
+      customCommands = [
+        {
+          key = "L";
+          command = "git diff HEAD -- {{ .SelectedFile.Name | quote }} | delta -s";
+          output = "terminal";
+          context = "files";
+        }
+      ];
+      git = {
+        paging = {
+          colorArg = "always";
+          pager = "delta --paging=never -s";
+        };
+      };
     };
   };
 }

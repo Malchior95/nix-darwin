@@ -14,6 +14,11 @@ let
 
     allow_remote_control yes
 
+
+    #without setting filter, this will disable sanitization
+    paste_actions filter
+
+
     # jumptab open: focus or launch a predefined tab
     action_alias open kitten jumptab.py open --cwd=current
     map alt+1 open 1
@@ -25,6 +30,20 @@ let
     map alt+7 open 7
     map alt+8 open 8
     map alt+9 open 9
+
+
+    # jumptab send: move a window to a predefined tab
+    action_alias send kitten jumptab.py send --keep-focus
+    map shift+alt+1 send 1
+    map shift+alt+2 send 2
+    map shift+alt+3 send 3
+    map shift+alt+4 send 4
+    map shift+alt+5 send 5
+    map shift+alt+6 send 6
+    map shift+alt+7 send 7
+    map shift+alt+8 send 8
+    map shift+alt+9 send 9
+
   '';
 
   darkTheme = ''
