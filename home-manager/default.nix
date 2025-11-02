@@ -27,6 +27,11 @@
       sqlite
       yt-dlp
       sops
+      rsync
+      rclone
+      android-tools
+      heimdall # flash samsung android devices
+      glow # md viewer
       #squirreldisk
       #qbittorrent
       #libreoffice

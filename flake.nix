@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    #nixstable.url = "github:nixos/nixpkgs/nixpkgs-24.11-darwin";
+    nixstable_25_05.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
@@ -14,6 +14,7 @@
     nvf.url = "github:notashelf/nvf/99f1200c8db9295e556255e49175a6d2a5c02fbd";
     nvf.inputs.nixpkgs.follows = "nixpkgs";
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
   };
 
   outputs =
@@ -30,6 +31,7 @@
       configuration =
         { pkgs, config, ... }:
         {
+
           system.primaryUser = "ironche";
           # List packages installed in system profile. To search by name, run:
           # $ nix-env -qaP | grep wget
@@ -63,7 +65,7 @@
             onActivation.cleanup = "zap";
           };
 
-          #services.netbird.enable = true;
+          services.netbird.enable = true;
           #services.tailscale.enable = true;
 
           # Necessary for using flakes on this system.

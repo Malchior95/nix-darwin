@@ -1,4 +1,9 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  system,
+  ...
+}:
 {
   programs.yazi =
     let
@@ -33,48 +38,46 @@
     };
 
   home.packages = with pkgs; [
-    #rust
-    # rustc
-    # cargo
     rustup
-    # clippy
-    # rustfmt
     cargo-generate
-    # rust-analyzer
-    #web
     bun
   ];
 
   programs.helix =
     let
-      crates-lsp-source = pkgs.fetchgit {
-        url = "https://github.com/MathiasPius/crates-lsp.git";
-        sha256 = "sha256-s42nWQC2tD7vhQNPdTQNRokwXqeBhELidVYTlos+No0=";
-      };
-      crates-lsp-drv = pkgs.rustPlatform.buildRustPackage {
-        pname = "crates-lsp";
-        version = "1.0";
-        src = crates-lsp-source;
-        cargoLock = {
-          lockFile = "${crates-lsp-source}/Cargo.lock";
-        };
-      };
+      # INFO: keeping this - this is how to build rust packages from the source
+      # crates-lsp-source = pkgs.fetchgit {
+      #   url = "https://github.com/MathiasPius/crates-lsp.git";
+      #   sha256 = "sha256-HzoOsizeV2LOXXc8BKA7u5mwBJbWNaBZvPepAaVeTCQ=";
+      # };
+      # crates-lsp-drv = pkgs.rustPlatform.buildRustPackage {
+      #   pname = "crates-lsp";
+      #   version = "1.0";
+      #   src = crates-lsp-source;
+      #   cargoLock = {
+      #     lockFile = "${crates-lsp-source}/Cargo.lock";
+      #   };
+      # };
+      # INFO: but an official build recently became available on nixpkgs
+      crates-lsp-drv = inputs.nixstable_25_05.legacyPackages.${system}.crates-lsp;
 
     in
     {
       enable = true;
+      # INFO: below see how to enable certain packages only in the environment of one paricular package
+      # INFO: no longer doing it like this, because I use nightly (rustup)
       #package = inputs.helix.packages.${pkgs.system}.default;
-      package = pkgs.buildEnv {
-        # adding clippy to helix runtime closure - I want clippy to always be available in helix
-        name = "helix-with-clippy";
-        paths = [
-          # inputs.helix.packages.${pkgs.system}.default
-          pkgs.helix
-          # pkgs.clippy
-          # pkgs.rustfmt
-          pkgs.markdown-oxide
-        ];
-      };
+      # package = pkgs.buildEnv {
+      #   # adding clippy to helix runtime closure - I want clippy to always be available in helix
+      #   name = "helix-with-clippy";
+      #   paths = [
+      #     # inputs.helix.packages.${pkgs.system}.default
+      #     pkgs.helix
+      #     # pkgs.clippy
+      #     # pkgs.rustfmt
+      #     pkgs.markdown-oxide
+      #   ];
+      # };
       settings = {
         theme = "gruvbox";
         editor = {
@@ -140,6 +143,20 @@
           {
             name = "markdown";
             auto-format = true;
+
+            formatter = {
+              command = "${pkgs.prettier}/bin/prettier";
+              args = [
+                "--stdin-filepath"
+                "%{buffer_name}"
+                "--parser"
+                "markdown"
+                "--prose-wrap"
+                "always" # keep a consistent wrapping style
+                # "--print-width"
+                # "100" # adjust to taste
+              ];
+            };
           }
           {
             name = "c-sharp";
@@ -229,17 +246,12 @@
         ];
 
         language-server = {
-          #ok, so I'm having the following problem - I have installed nightly rust in one of the direnvs and it conflicts with older
-          # version of rust-analyzer here. What do?
           rust-analyzer = {
-
-            #ok, I don't know how to approach this anymore. Rust-analyzer needs to match version with the project rustc compiled binary
-            #command = "${pkgs.rust-analyzer}/bin/rust-analyzer";
             command = "rust-analyzer";
             config = {
               check = {
                 command = "clippy";
-              }; # the problem here is that clippy is not run as a binary, but as cargo run, so I cannot invoke pkgs.clippy here
+              };
               cargo = {
                 features = "all";
               };
@@ -263,6 +275,10 @@
           };
           crates-lsp = {
             command = "${crates-lsp-drv}/bin/crates-lsp";
+
+            config = {
+              inlay_hints = false;
+            };
           };
           typescript-language-server = {
             command = "${pkgs.typescript-language-server}/bin/typescript-language-server";
@@ -286,12 +302,6 @@
         };
       };
     };
-
-  #syntax injection
-  # home.file.".config/helix/runtime/queries/typescript/injections.scm".text = ''
-  #    ((string_expression) @html
-  #   (#match? @html ".*<.*>.*"))
-  # '';
 
   home.file.".config/helix/runtime/queries/rust/injections.scm".text =
     builtins.readFile (pkgs.helix + "/lib/runtime/queries/rust/injections.scm")
