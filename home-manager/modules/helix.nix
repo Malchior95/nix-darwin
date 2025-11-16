@@ -243,6 +243,19 @@
             language-servers = [ "svelte-language-server" ];
             auto-format = true;
           }
+
+          {
+            name = "tsx";
+            language-servers = [ "typescript-language-server" ];
+            auto-format = true;
+            formatter = {
+              command = "${pkgs.prettier}/bin/prettier";
+              args = [
+                "--stdin-filepath"
+                "%{buffer_name}"
+              ];
+            };
+          }
         ];
 
         language-server = {

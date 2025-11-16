@@ -45,11 +45,9 @@
             enable = true;
             casks = [
               "dotnet-sdk" # required for godot-mono
-              "godot-mono"
               "blender"
               "krita"
               "qbittorrent"
-              "minecraft"
               "goxel"
               "vlc"
               "libreoffice"

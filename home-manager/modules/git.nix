@@ -24,10 +24,12 @@
         }
       ];
       git = {
-        paging = {
-          colorArg = "always";
-          pager = "delta --paging=never -s";
-        };
+        pagers = [
+          {
+            colorArg = "always";
+            pager = "delta --paging=never -s";
+          }
+        ];
       };
     };
   };
