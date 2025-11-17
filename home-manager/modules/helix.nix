@@ -4,6 +4,9 @@
   system,
   ...
 }:
+let
+  pkgsStable = inputs.nixstable_25_05.legacyPackages.${system};
+in
 {
   programs.yazi =
     let
@@ -59,7 +62,7 @@
       #   };
       # };
       # INFO: but an official build recently became available on nixpkgs
-      crates-lsp-drv = inputs.nixstable_25_05.legacyPackages.${system}.crates-lsp;
+      crates-lsp-drv = pkgsStable.crates-lsp;
 
     in
     {
@@ -294,7 +297,7 @@
             };
           };
           typescript-language-server = {
-            command = "${pkgs.typescript-language-server}/bin/typescript-language-server";
+            command = "${pkgsStable.typescript-language-server}/bin/typescript-language-server";
           };
           taplo = {
             command = "${pkgs.taplo}/bin/taplo";
